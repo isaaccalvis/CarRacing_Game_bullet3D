@@ -300,6 +300,8 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	btRigidBody* body = new btRigidBody(rbInfo);
 	body->setContactProcessingThreshold(BT_LARGE_FLOAT);
 	body->setActivationState(DISABLE_DEACTIVATION);
+	//	AIXO SERVEIX PER XAPAR ELS ANGLES DELS VEHICLES
+	//	body->setAngularFactor(btVector3(0 ,1, 0));
 
 	world->addRigidBody(body);
 
@@ -399,8 +401,12 @@ int	 DebugDrawer::getDebugMode() const
 void ModulePhysics3D::deleteVehiclesFromWorld() {
 	p2List_item<PhysVehicle3D*>* rec = vehicles.getFirst();
 	while (rec != nullptr) {
-		if (rec->data->info.deleteThisObject == true)
-			vehicles.del(rec);
-		rec = rec->next;
+		if (rec->data->info.deleteThisObject != false) {
+			p2List_item<PhysVehicle3D*>* aux = rec;
+			rec = rec->next;
+			vehicles.del(aux);
+		}
+		else
+			rec = rec->next;
 	}
 }

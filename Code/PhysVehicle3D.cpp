@@ -93,3 +93,8 @@ float PhysVehicle3D::GetKmh() const
 {
 	return vehicle->getCurrentSpeedKmHour();
 }
+
+vec3 PhysVehicle3D::getVec3Pos() {
+	vec3 ret;//(this->vehicle->getForwardAxis,0,0);
+	return ret;
+}

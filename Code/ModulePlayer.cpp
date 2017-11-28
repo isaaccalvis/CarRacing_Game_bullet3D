@@ -20,7 +20,7 @@ bool ModulePlayer::Start()
 
 	VehicleInfo car = createVehicle(MOTOR_BIKE);
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 12, 10);
+	vehicle->SetPos(0, 0, - 10);
 	
 	return true;
 }
@@ -66,14 +66,14 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(CAR);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(0, 12, 10);
+		vehicle->SetPos(App->camera->Position.x , App->camera->Position.y + 10, App->camera->Position.z);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(MOTOR_BIKE);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(0, 12, 10);
+		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
@@ -85,8 +85,15 @@ update_status ModulePlayer::Update(float dt)
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
-
 	
+	App->camera->Position.x = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX();
+	App->camera->Position.y = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY() + 5;
+	App->camera->Position.z = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ() + 10;
+
+	App->camera->LookAt(vec3(App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX(), vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY(), App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ()));// = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX();
+	App->camera->Reference.y = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().angle();
+	//App->camera->Reference.z = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -189,7 +196,7 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		float connection_height = 1.2f;
 		float wheel_radius = 0.6f;
 		float wheel_width = 0.7f;
-		float suspensionRestLength = 1.2f;
+		float suspensionRestLength = 0.9f;
 
 		// Don't change anything below this line ------------------
 
