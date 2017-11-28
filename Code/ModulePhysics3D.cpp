@@ -396,10 +396,11 @@ int	 DebugDrawer::getDebugMode() const
 	return mode;
 }
 
-void ModulePhysics3D::deleteObjectFromWorld(const VehicleInfo inf) {
+void ModulePhysics3D::deleteVehiclesFromWorld() {
 	p2List_item<PhysVehicle3D*>* rec = vehicles.getFirst();
 	while (rec != nullptr) {
-		if (rec->data->info == VehicleInfo)
+		if (rec->data->info.deleteThisObject == true)
+			vehicles.del(rec);
 		rec = rec->next;
 	}
 }

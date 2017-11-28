@@ -62,12 +62,15 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
 	{
-		App.
+		vehicle->info.deleteThisObject = true;
+		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(CAR);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(0, 12, 10);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		vehicle->info.deleteThisObject = true;
+		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(MOTOR_BIKE);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(0, 12, 10);
