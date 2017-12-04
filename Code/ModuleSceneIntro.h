@@ -3,8 +3,15 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "PugiXml\src\pugixml.hpp"
 
 #define MAX_SNAKE 2
+
+enum primitiveTypes {
+	NONE,
+	CUBE,
+	SPHERE
+};
 
 struct PhysBody3D;
 struct PhysMotor3D;
@@ -20,6 +27,10 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+
+	// map
+	void createMap1();
+	void addPrimitiveToMap(primitiveTypes type, int x , int y, int z, int radOrX, int Y, int Z);
 
 public:
 	/*
