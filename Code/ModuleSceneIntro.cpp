@@ -14,6 +14,8 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
+	//mapXML = new pugi::xml_document;
+	//mapXML.load_file("mapa.tmx");
 	LOG("Loading Intro assets");
 	bool ret = true;
 	createMap1();
@@ -50,6 +52,26 @@ void ModuleSceneIntro::createMap1() {
 	addPrimitiveToMap(CUBE, 4, 1, 2, 3, 3, 3);
 	addPrimitiveToMap(CUBE, 4, 1, 3, 3, 3, 3);
 	addPrimitiveToMap(CUBE, 4, 1, 4, 3, 3, 3);
+
+
+	//pugi::xml_node layer_data = mapXML.child("layer").child("data");
+	//
+	////for (pugi::xml_node iterator = mapXML.child("layer").child("data").child("tile"); iterator != nullptr; iterator = iterator.next_sibling())
+	////{
+	////	layer->size_data++;
+
+	////}
+
+	////layer->data = new uint[layer->size_data];
+	////memset(layer->data, 0, layer->width*layer->height);
+
+	////int i = 0;
+
+	//for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+	//{
+	//	printf_s("%i\n",tile.attribute("gid").as_int(0));
+	//}
+
 
 }
 

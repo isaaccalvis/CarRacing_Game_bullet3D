@@ -3,7 +3,7 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 #include "Primitive.h"
-#include "PugiXml\src\pugixml.hpp"
+#include "PugiXml/src/pugixml.hpp"
 
 #define MAX_SNAKE 2
 
@@ -28,18 +28,10 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	// map
 	void createMap1();
 	void addPrimitiveToMap(primitiveTypes type, int x , int y, int z, int radOrX, int Y, int Z);
 
 public:
-	/*
-	PhysBody3D* pb_snake[MAX_SNAKE];
-	Sphere s_snake[MAX_SNAKE];
-
-	PhysBody3D* pb_snake2[MAX_SNAKE];
-	Sphere s_snake2[MAX_SNAKE];
-	*/
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
@@ -52,4 +44,6 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	pugi::xml_document mapXML;
 };

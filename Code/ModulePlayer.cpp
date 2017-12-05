@@ -94,7 +94,6 @@ update_status ModulePlayer::Update(float dt)
 	App->window->SetTitle(title);
 	
 	//App->camera->Position.x = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX() + rotationCameraRespectVehicle;
-	App->camera->Position.x = App->player->vehicle->getVec3Pos().x;
 	App->camera->Position.y = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY() + 5;
 	App->camera->Position.z = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ() - 10;
 
