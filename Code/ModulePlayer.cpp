@@ -19,7 +19,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 	VehicleInfo car = createVehicle(CAR);
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 0, - 10);
+	vehicle->SetPos(10, 0, - 20 * 16);
 	
 	return true;
 }

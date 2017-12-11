@@ -62,11 +62,11 @@ void ModuleSceneIntro::createMap1() {
 	{
 		for (int x = 0; x < mapXML->child("map").attribute("width").as_int(); ++x)
 		{
-			switch(tile.attribute("gid").as_int() + 1) {
+			switch(tile.attribute("gid").as_int() - 1) {
 			case 0:
 				break;
 			case 1:
-				App->player->vehicle->setPos(1,1);
+				
 				break;
 			case 2:
 				break;
@@ -88,14 +88,19 @@ void ModuleSceneIntro::createMap1() {
 				addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE , 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			case 10:
+				addPrimitiveToMap(CIRCUIT_ROTA_FRONT_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			case 11:
+				addPrimitiveToMap(CIRCUIT_ROTA_FRONT_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			case 12:
+				addPrimitiveToMap(CIRCUIT_ROTA_BACK_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			case 13:
+				addPrimitiveToMap(CIRCUIT_ROTA_BACK_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			case 14:
+				addPrimitiveToMap(CIRCUIT_RECTA_LATERAL, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 				break;
 			}
 				tile = tile.next_sibling("tile");
@@ -127,11 +132,21 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		break;
 	}
 	case CIRCUIT_ROTA_FRONT_RIGHT: {
-
+		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
+		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
+		cube2.SetPos(x , y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 1);
+		App->physics->AddBody(cube2, 1);
 	}
 		break;
 	case CIRCUIT_ROTA_FRONT_LEFT: {
-
+		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
+		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
+		cube2.SetPos(x + SIZE * SPACE_PART_CIRCUIT, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 1);
+		App->physics->AddBody(cube2, 1);
 	}
 		break;
 	case CIRCUIT_ROTA_BACK_RIGHT: {
