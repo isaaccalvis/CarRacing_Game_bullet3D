@@ -4,6 +4,11 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 
+#include "ModulePlayer.h"
+
+#define SIZE 3
+#define SPACE_PART_CIRCUIT 4
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -14,8 +19,8 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	//mapXML = new pugi::xml_document;
-	//mapXML.load_file("mapa.tmx");
+	mapXML = new pugi::xml_document;
+	mapXML->load_file("mapa.tmx");
 	LOG("Loading Intro assets");
 	bool ret = true;
 	createMap1();
@@ -48,31 +53,54 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 }
 
 void ModuleSceneIntro::createMap1() {
-	addPrimitiveToMap(CUBE, 4, 1, 1, 3, 3, 3);
-	addPrimitiveToMap(CUBE, 4, 1, 2, 3, 3, 3);
-	addPrimitiveToMap(CUBE, 4, 1, 3, 3, 3, 3);
-	addPrimitiveToMap(CUBE, 4, 1, 4, 3, 3, 3);
 
+	pugi::xml_node layer_data = mapXML->child("map").child("layer").child("data");
 
-	//pugi::xml_node layer_data = mapXML.child("layer").child("data");
-	//
-	////for (pugi::xml_node iterator = mapXML.child("layer").child("data").child("tile"); iterator != nullptr; iterator = iterator.next_sibling())
-	////{
-	////	layer->size_data++;
+	pugi::xml_node tile = layer_data.child("tile");
 
-	////}
-
-	////layer->data = new uint[layer->size_data];
-	////memset(layer->data, 0, layer->width*layer->height);
-
-	////int i = 0;
-
-	//for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
-	//{
-	//	printf_s("%i\n",tile.attribute("gid").as_int(0));
-	//}
-
-
+	for (int y = 0; y < mapXML->child("map").attribute("height").as_int(); ++y)
+	{
+		for (int x = 0; x < mapXML->child("map").attribute("width").as_int(); ++x)
+		{
+			switch(tile.attribute("gid").as_int() + 1) {
+			case 0:
+				break;
+			case 1:
+				App->player->vehicle->setPos(1,1);
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				addPrimitiveToMap(CUBE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+				break;
+			case 6:
+				addPrimitiveToMap(SPHERE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+			case 9:
+				addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE , 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+				break;
+			case 10:
+				break;
+			case 11:
+				break;
+			case 12:
+				break;
+			case 13:
+				break;
+			case 14:
+				break;
+			}
+				tile = tile.next_sibling("tile");
+		}
+	}
 }
 
 void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int z, int radOrX, int Y = 1, int Z = 1) {
@@ -80,14 +108,39 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 	case CUBE: {
 		Cube cube(radOrX, Y, Z);
 		cube.SetPos(x, y, z);
-		App->physics->AddBody(cube, 999);
+		App->physics->AddBody(cube, 1);
 		break;
 	}
 	case SPHERE: {
 		Sphere sphere(radOrX);
 		sphere.SetPos(x, y, z);
-		App->physics->AddBody(sphere, 999);
+		App->physics->AddBody(sphere, 1);
 		break;
 	}
+	case CIRCUIT_RECTA: {
+		Cube cube(radOrX, Y , Z * SPACE_PART_CIRCUIT);
+		Cube cube2(radOrX, Y , Z * SPACE_PART_CIRCUIT);
+		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT/2, y, z );
+		cube2.SetPos(x - SIZE * SPACE_PART_CIRCUIT/2, y, z );
+		App->physics->AddBody(cube, 1);
+		App->physics->AddBody(cube2, 1);
+		break;
+	}
+	case CIRCUIT_ROTA_FRONT_RIGHT: {
+
+	}
+		break;
+	case CIRCUIT_ROTA_FRONT_LEFT: {
+
+	}
+		break;
+	case CIRCUIT_ROTA_BACK_RIGHT: {
+
+	}
+		break;
+	case CIRCUIT_ROTA_BACK_LEFT: {
+
+	}
+		break;
 	}
 }

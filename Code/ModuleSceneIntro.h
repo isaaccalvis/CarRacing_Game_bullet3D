@@ -10,7 +10,12 @@
 enum primitiveTypes {
 	NONE,
 	CUBE,
-	SPHERE
+	SPHERE,
+	CIRCUIT_RECTA,
+	CIRCUIT_ROTA_FRONT_RIGHT,
+	CIRCUIT_ROTA_FRONT_LEFT,
+	CIRCUIT_ROTA_BACK_RIGHT,
+	CIRCUIT_ROTA_BACK_LEFT
 };
 
 struct PhysBody3D;
@@ -45,5 +50,5 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
-	pugi::xml_document mapXML;
+	pugi::xml_document* mapXML;
 };

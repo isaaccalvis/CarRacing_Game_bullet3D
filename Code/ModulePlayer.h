@@ -5,7 +5,8 @@
 
 enum type_vehicle {
 	CAR,
-	MOTOR_BIKE
+	MOTOR_BIKE,
+	TRUCK
 };
 
 struct PhysVehicle3D;
