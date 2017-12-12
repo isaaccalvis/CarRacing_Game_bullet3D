@@ -191,6 +191,24 @@ bool ModulePhysics3D::CleanUp()
 	return true;
 }
 
+void ModulePhysics3D::CleanWorld(){
+	for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = world->getCollisionObjectArray()[i];
+		world->removeCollisionObject(obj);
+	}
+}
+
+void ModulePhysics3D::CleanBodies() {
+	for (p2List_item<PhysBody3D*>* item = bodies.getFirst(); item; item = item->next)
+		delete item->data;
+	bodies.clear();
+}
+
+void ModulePhysics3D::CleanVehicle() {
+	vehicles.clear();
+}
+
 // ---------------------------------------------------------
 PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 {

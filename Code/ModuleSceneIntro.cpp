@@ -19,8 +19,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	mapXML = new pugi::xml_document;
-	mapXML->load_file("mapa.tmx");
+
 	LOG("Loading Intro assets");
 	bool ret = true;
 	createMap1();
@@ -53,7 +52,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 }
 
 void ModuleSceneIntro::createMap1() {
-
+	mapXML = new pugi::xml_document;
+	mapXML->load_file("mapa.tmx");
 	pugi::xml_node layer_data = mapXML->child("map").child("layer").child("data");
 
 	pugi::xml_node tile = layer_data.child("tile");

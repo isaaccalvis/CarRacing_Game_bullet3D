@@ -69,7 +69,13 @@ update_status ModulePlayer::Update(float dt)
 	{
 		brake = BRAKE_POWER;
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+		system("mapa.tmx");
+		App->physics->CleanVehicle();
+		App->physics->CleanBodies();
+		App->physics->CleanWorld();
+		App->scene_intro->createMap1();
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
 	{
