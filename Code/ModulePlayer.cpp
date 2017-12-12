@@ -70,11 +70,20 @@ update_status ModulePlayer::Update(float dt)
 		brake = BRAKE_POWER;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+		// elimina vehicle
+		vehicle->info.deleteThisObject = true;
+		App->physics->deleteVehiclesFromWorld();
+		// refresca mapa
 		system("mapa.tmx");
-		App->physics->CleanVehicle();
-		App->physics->CleanBodies();
 		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
 		App->scene_intro->createMap1();
+		// crea vehicle
+		VehicleInfo car = createVehicle(CAR);
+		vehicle = App->physics->AddVehicle(car);
+		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
