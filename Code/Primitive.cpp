@@ -1,4 +1,4 @@
-
+// http://www.opengl-tutorial.org/es/beginners-tutorials/tutorial-7-model-loading/
 #include "Globals.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>

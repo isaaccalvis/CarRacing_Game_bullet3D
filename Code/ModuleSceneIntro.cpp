@@ -113,13 +113,13 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 	case CUBE: {
 		Cube cube(radOrX, Y, Z);
 		cube.SetPos(x, y, z);
-		App->physics->AddBody(cube, 1);
+		App->physics->AddBody(cube, 0);
 		break;
 	}
 	case SPHERE: {
 		Sphere sphere(radOrX);
 		sphere.SetPos(x, y, z);
-		App->physics->AddBody(sphere, 1);
+		App->physics->AddBody(sphere, 0);
 		break;
 	}
 	case CIRCUIT_RECTA: {
@@ -127,35 +127,54 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube2(radOrX, Y , Z * SPACE_PART_CIRCUIT);
 		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT/2, y, z );
 		cube2.SetPos(x - SIZE * SPACE_PART_CIRCUIT/2, y, z );
-		App->physics->AddBody(cube, 1);
-		App->physics->AddBody(cube2, 1);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
 		break;
 	}
 	case CIRCUIT_ROTA_FRONT_RIGHT: {
 		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
-		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
-		cube2.SetPos(x , y, z + SIZE * SPACE_PART_CIRCUIT / 2);
-		App->physics->AddBody(cube, 1);
-		App->physics->AddBody(cube2, 1);
+		cube.SetPos(x - SIZE * SPACE_PART_CIRCUIT / 2, y, z);
+		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
 	}
 		break;
 	case CIRCUIT_ROTA_FRONT_LEFT: {
 		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
-		cube2.SetPos(x + SIZE * SPACE_PART_CIRCUIT, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
-		App->physics->AddBody(cube, 1);
-		App->physics->AddBody(cube2, 1);
+		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
 	}
 		break;
 	case CIRCUIT_ROTA_BACK_RIGHT: {
-
+		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
+		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		cube.SetPos(x - SIZE * SPACE_PART_CIRCUIT / 2, y, z);
+		cube2.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
 	}
 		break;
 	case CIRCUIT_ROTA_BACK_LEFT: {
-
+		Cube cube(radOrX, Y, Z * SPACE_PART_CIRCUIT / 4 * 3);
+		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
+		cube2.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
+		
 	}
+		break;
+	case CIRCUIT_RECTA_LATERAL:
+		Cube cube(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
+		cube.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube2, 0);
 		break;
 	}
 }

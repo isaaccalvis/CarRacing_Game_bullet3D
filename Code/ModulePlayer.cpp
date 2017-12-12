@@ -19,7 +19,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 	VehicleInfo car = createVehicle(CAR);
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(10, 0, - 20 * 16);
+	vehicle->SetPos(10, 0, 0);
 	
 	return true;
 }
@@ -40,6 +40,10 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			acceleration = MAX_ACCELERATION + MAX_ACCELERATION / 2;
+		else if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+			acceleration = MAX_ACCELERATION - MAX_ACCELERATION / 2;
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -65,6 +69,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		brake = BRAKE_POWER;
 	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
 	{
