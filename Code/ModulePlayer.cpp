@@ -17,7 +17,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	VehicleInfo car = createVehicle(CAR);
+	VehicleInfo car = createVehicle(VEHICLE_CAR);
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(10, 0, 0);
 	
@@ -81,7 +81,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->Start();
 		App->scene_intro->createMap1();
 		// crea vehicle
-		VehicleInfo car = createVehicle(CAR);
+		VehicleInfo car = createVehicle(VEHICLE_CAR);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
@@ -90,21 +90,35 @@ update_status ModulePlayer::Update(float dt)
 	{
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
-		VehicleInfo car = createVehicle(CAR);
+		VehicleInfo car = createVehicle(VEHICLE_CAR);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(App->camera->Position.x , App->camera->Position.y + 10, App->camera->Position.z);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
-		VehicleInfo car = createVehicle(MOTOR_BIKE);
+		VehicleInfo car = createVehicle(VEHICLE_MOTOR_BIKE);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
-		VehicleInfo car = createVehicle(TRUCK);
+		VehicleInfo car = createVehicle(VEHICLE_TRUCK);
+		vehicle = App->physics->AddVehicle(car);
+		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		vehicle->info.deleteThisObject = true;
+		App->physics->deleteVehiclesFromWorld();
+		VehicleInfo car = createVehicle(VEHICLE_TRIPODE);
+		vehicle = App->physics->AddVehicle(car);
+		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		vehicle->info.deleteThisObject = true;
+		App->physics->deleteVehiclesFromWorld();
+		VehicleInfo car = createVehicle(VEHICLE_STRAMBOTIC);
 		vehicle = App->physics->AddVehicle(car);
 		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
 	}
@@ -131,10 +145,10 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
+VehicleInfo ModulePlayer::createVehicle(type_vehicle type = VEHICLE_CAR) {
 	VehicleInfo vehicle;
 	switch (type) {
-	case type_vehicle::CAR:
+	case type_vehicle::VEHICLE_CAR:
 	{
 		vehicle.chassis_size.Set(2, 2, 4);
 		vehicle.chassis_offset.Set(0, 1.5, 0);
@@ -204,9 +218,9 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		vehicle.wheels[3].brake = true;
 		vehicle.wheels[3].steering = false;
 	}
-		break;
+	break;
 
-	case type_vehicle::MOTOR_BIKE: {
+	case type_vehicle::VEHICLE_MOTOR_BIKE: {
 		vehicle.chassis_size.Set(1, 2, 4);
 		vehicle.chassis_offset.Set(0, 1.5, 0);
 		vehicle.mass = 300.0f;
@@ -231,7 +245,7 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		vehicle.num_wheels = 2;
 		vehicle.wheels = new Wheel[2];
 
-		vehicle.wheels[0].connection.Set( 0, connection_height, - wheel_radius - half_width);
+		vehicle.wheels[0].connection.Set(0, connection_height, -wheel_radius - half_width);
 		vehicle.wheels[0].direction = direction;
 		vehicle.wheels[0].axis = axis;
 		vehicle.wheels[0].suspensionRestLength = suspensionRestLength;
@@ -242,7 +256,7 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		vehicle.wheels[0].brake = false;
 		vehicle.wheels[0].steering = false;
 
-		vehicle.wheels[1].connection.Set( 0 , connection_height, half_length - wheel_radius);
+		vehicle.wheels[1].connection.Set(0, connection_height, half_length - wheel_radius);
 		vehicle.wheels[1].direction = direction;
 		vehicle.wheels[1].axis = axis;
 		vehicle.wheels[1].suspensionRestLength = suspensionRestLength;
@@ -253,8 +267,8 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		vehicle.wheels[1].brake = false;
 		vehicle.wheels[1].steering = true;
 	}
-		break;
-	case TRUCK:
+										   break;
+	case VEHICLE_TRUCK: {
 		vehicle.chassis_size.Set(2, 2, 10);
 		vehicle.chassis_offset.Set(0, 1.5, 0);
 		vehicle.mass = 2000.0f;
@@ -350,8 +364,132 @@ VehicleInfo ModulePlayer::createVehicle(type_vehicle type = CAR) {
 		vehicle.wheels[5].drive = false;
 		vehicle.wheels[5].brake = true;
 		vehicle.wheels[5].steering = false;
+	}
 		break;
 
+	case VEHICLE_TRIPODE: {
+		{
+			vehicle.chassis_size.Set(2, 2, 4);
+			vehicle.chassis_offset.Set(0, 1.5, 0);
+			vehicle.mass = 500.0f;
+			vehicle.suspensionStiffness = 15.88f;
+			vehicle.suspensionCompression = 0.83f;
+			vehicle.suspensionDamping = 0.88f;
+			vehicle.maxSuspensionTravelCm = 1000.0f;
+			vehicle.frictionSlip = 50.5;
+			vehicle.maxSuspensionForce = 6000.0f;
+
+			float connection_height = 1.2f;
+			float wheel_radius = 0.6f;
+			float wheel_width = 0.5f;
+			float suspensionRestLength = 1.2f;
+
+			float half_width = vehicle.chassis_size.x*0.5f;
+			float half_length = vehicle.chassis_size.z*0.5f;
+
+			vec3 direction(0, -1, 0);
+			vec3 axis(-1, 0, 0);
+
+			vehicle.num_wheels = 3;
+			vehicle.wheels = new Wheel[3];
+
+			vehicle.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, half_length - wheel_radius);
+			vehicle.wheels[0].direction = direction;
+			vehicle.wheels[0].axis = axis;
+			vehicle.wheels[0].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[0].radius = wheel_radius;
+			vehicle.wheels[0].width = wheel_width;
+			vehicle.wheels[0].front = true;
+			vehicle.wheels[0].drive = true;
+			vehicle.wheels[0].brake = false;
+			vehicle.wheels[0].steering = true;
+
+			vehicle.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius);
+			vehicle.wheels[1].direction = direction;
+			vehicle.wheels[1].axis = axis;
+			vehicle.wheels[1].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[1].radius = wheel_radius;
+			vehicle.wheels[1].width = wheel_width;
+			vehicle.wheels[1].front = true;
+			vehicle.wheels[1].drive = true;
+			vehicle.wheels[1].brake = false;
+			vehicle.wheels[1].steering = true;
+
+			vehicle.wheels[2].connection.Set(0, connection_height, -half_length + wheel_radius);
+			vehicle.wheels[2].direction = direction;
+			vehicle.wheels[2].axis = axis;
+			vehicle.wheels[2].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[2].radius = wheel_radius;
+			vehicle.wheels[2].width = wheel_width;
+			vehicle.wheels[2].front = false;
+			vehicle.wheels[2].drive = false;
+			vehicle.wheels[2].brake = true;
+			vehicle.wheels[2].steering = false;
+		}
+	}
+		break;
+		case VEHICLE_STRAMBOTIC: {
+		{
+			vehicle.chassis_size.Set(2, 2, 7);
+			vehicle.chassis_offset.Set(0, 1.5, 0);
+			vehicle.mass = 500.0f;
+			vehicle.suspensionStiffness = 15.88f;
+			vehicle.suspensionCompression = 0.83f;
+			vehicle.suspensionDamping = 0.88f;
+			vehicle.maxSuspensionTravelCm = 1000.0f;
+			vehicle.frictionSlip = 50.5;
+			vehicle.maxSuspensionForce = 6000.0f;
+
+			float connection_height = 1.2f;
+			float wheel_radius = 0.6f;
+			float wheel_width = 0.5f;
+			float suspensionRestLength = 1.2f;
+
+			float half_width = vehicle.chassis_size.x*0.5f;
+			float half_length = vehicle.chassis_size.z*0.5f;
+
+			vec3 direction(0, -1, 0);
+			vec3 axis(-1, 0, 0);
+
+			vehicle.num_wheels = 3;
+			vehicle.wheels = new Wheel[3];
+
+			vehicle.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, -half_length + wheel_radius);
+			vehicle.wheels[0].direction = direction;
+			vehicle.wheels[0].axis = axis;
+			vehicle.wheels[0].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[0].radius = wheel_radius * 2;
+			vehicle.wheels[0].width = wheel_width * 2;
+			vehicle.wheels[0].front = true;
+			vehicle.wheels[0].drive = true;
+			vehicle.wheels[0].brake = false;
+			vehicle.wheels[0].steering = true;
+
+			vehicle.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, -half_length + wheel_radius);
+			vehicle.wheels[1].direction = direction;
+			vehicle.wheels[1].axis = axis;
+			vehicle.wheels[1].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[1].radius = wheel_radius * 2;
+			vehicle.wheels[1].width = wheel_width * 2;
+			vehicle.wheels[1].front = true;
+			vehicle.wheels[1].drive = true;
+			vehicle.wheels[1].brake = false;
+			vehicle.wheels[1].steering = true;
+
+			vehicle.wheels[2].connection.Set(0, connection_height, +half_length - wheel_radius);
+			vehicle.wheels[2].direction = direction;
+			vehicle.wheels[2].axis = axis;
+			vehicle.wheels[2].suspensionRestLength = suspensionRestLength;
+			vehicle.wheels[2].radius = wheel_radius;
+			vehicle.wheels[2].width = wheel_width;
+			vehicle.wheels[2].front = false;
+			vehicle.wheels[2].drive = false;
+			vehicle.wheels[2].brake = true;
+			vehicle.wheels[2].steering = false;
+		}
+	}
+		break;
+	
 	}
 	return vehicle;
 

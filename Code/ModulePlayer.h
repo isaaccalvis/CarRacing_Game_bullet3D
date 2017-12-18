@@ -4,9 +4,11 @@
 #include "p2Point.h"
 
 enum type_vehicle {
-	CAR,
-	MOTOR_BIKE,
-	TRUCK
+	VEHICLE_CAR,
+	VEHICLE_MOTOR_BIKE,
+	VEHICLE_TRUCK,
+	VEHICLE_TRIPODE,
+	VEHICLE_STRAMBOTIC
 };
 
 struct PhysVehicle3D;

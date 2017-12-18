@@ -13,6 +13,7 @@ public:
 	ModuleWindow(Application* app, bool start_enabled = true);
 
 	// Destructor
+	//txell sexy
 	virtual ~ModuleWindow();
 
 	bool Init();
