@@ -1,7 +1,10 @@
 
 #pragma once
+#include "Globals.h"
+#include "Module.h"
 #include "glmath.h"
 #include "Color.h"
+#include <vector>
 
 enum PrimitiveTypes
 {
@@ -10,7 +13,8 @@ enum PrimitiveTypes
 	Primitive_Plane,
 	Primitive_Cube,
 	Primitive_Sphere,
-	Primitive_Cylinder
+	Primitive_Cylinder,
+	Primitive_Custom
 };
 
 class Primitive
@@ -92,4 +96,13 @@ public:
 public:
 	vec3 normal;
 	float constant;
+};
+
+class Custom : public Primitive {
+	Custom();
+	void InnerRender() const;
+public:
+	std::vector< vec3 > vertices;
+	std::vector< vec2 > uvs;
+	std::vector< vec3 > normals; // Won't be used at the moment.
 };

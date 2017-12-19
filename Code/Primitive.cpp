@@ -1,9 +1,9 @@
-// http://www.opengl-tutorial.org/es/beginners-tutorials/tutorial-7-model-loading/
-#include "Globals.h"
+#include "Application.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Primitive.h"
 #include "glut/glut.h"
+#include "LoadOBJ.h"
 
 #pragma comment (lib, "glut/glut32.lib")
 
@@ -274,4 +274,14 @@ void Plane::InnerRender() const
 	}
 
 	glEnd();
+}
+
+// CUSTOM ==========================
+
+Custom::Custom() {
+	loadOBJ
+}
+
+void Custom::InnerRender() const {
+
 }

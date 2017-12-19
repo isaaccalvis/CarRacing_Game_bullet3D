@@ -93,6 +93,9 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Pugi</Filter>
     </ClInclude>
+    <ClInclude Include="LoadOBJ.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Pugi</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadOBJ.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
