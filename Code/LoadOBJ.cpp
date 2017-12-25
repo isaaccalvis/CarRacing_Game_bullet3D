@@ -1,30 +1,17 @@
 #include "Application.h"
 #include "LoadOBJ.h"
+#include <cstdio>
 
-ModuleLoadOBJ::ModuleLoadOBJ(Application* app) : Module(app, true){}
-ModuleLoadOBJ::~ModuleLoadOBJ() {}
+bool loadOBJ( const char * path, std::vector < vec3 > & out_vertices, std::vector < vec2 > & out_uvs, std::vector < vec3 > & out_normals) {
 
-bool ModuleLoadOBJ::Start() {
+	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
+	std::vector< vec3 > temp_vertices;
+	std::vector< vec2 > temp_uvs;
+	std::vector< vec3 > temp_normals;
 
-	return true;
-}
-
-update_status ModuleLoadOBJ::Update(float dt) {
-
-	return update_status::UPDATE_CONTINUE;
-}
-
-
-bool ModuleLoadOBJ::CleanUp() {
-
-	return true;
-}
-
-bool ModuleLoadOBJ::loadOBJ( const char * path, std::vector < vec3 > & out_vertices, std::vector < vec2 > & out_uvs, std::vector < vec3 > & out_normals) {
 	FILE * file = fopen(path, "r");
 	if (file == NULL)
 		return false;
-	this->file = file;
 
 	while (1) {
 		char lineHeader[128];

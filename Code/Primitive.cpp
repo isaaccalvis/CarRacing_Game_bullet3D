@@ -272,16 +272,28 @@ void Plane::InnerRender() const
 		glVertex3f(-d, 0.0f, i);
 		glVertex3f(d, 0.0f, i);
 	}
-
 	glEnd();
 }
 
 // CUSTOM ==========================
 
 Custom::Custom() {
-	loadOBJ
+	loadOBJ("meshes/cubu.obj", vertices, uvs, normals);
+
 }
 
-void Custom::InnerRender() const {
 
+// NO TE PERQUE FUNCIONAR !!!!!!
+void Custom::InnerRender() const {
+	glLineWidth(1.0f);
+
+	glBegin(GL_LINES);
+	std::vector <vec3> vecAux = vertices;
+	for (int i = vertices.size(); i != 0; i--) {
+		vec3 *aux = vecAux.data();
+		glVertex3f(aux->x, aux->y, aux->z);
+		vecAux.pop_back();
+	}
+
+	glEnd();
 }

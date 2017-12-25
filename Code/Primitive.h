@@ -104,5 +104,5 @@ class Custom : public Primitive {
 public:
 	std::vector< vec3 > vertices;
 	std::vector< vec2 > uvs;
-	std::vector< vec3 > normals; // Won't be used at the moment.
+	std::vector< vec3 > normals;
 };

@@ -7,7 +7,7 @@
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
 enum main_states
-{
+{	
 	MAIN_CREATION,
 	MAIN_START,
 	MAIN_UPDATE,

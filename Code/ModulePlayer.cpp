@@ -69,7 +69,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		brake = BRAKE_POWER;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		// elimina vehicle
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();

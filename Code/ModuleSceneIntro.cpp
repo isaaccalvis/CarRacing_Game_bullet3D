@@ -54,57 +54,62 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 void ModuleSceneIntro::createMap1() {
 	mapXML = new pugi::xml_document;
 	mapXML->load_file("mapa.tmx");
-	pugi::xml_node layer_data = mapXML->child("map").child("layer").child("data");
+	pugi::xml_node layer = mapXML->child("map").child("layer");
+	std::string nullLayerString = "";
+	std::string elements = "elements";
+	while (layer.attribute("name").as_string() != nullLayerString) {
+		pugi::xml_node layer_data = layer.child("data");
+		pugi::xml_node tile = layer_data.child("tile");
 
-	pugi::xml_node tile = layer_data.child("tile");
-
-	for (int y = 0; y < mapXML->child("map").attribute("height").as_int(); ++y)
-	{
-		for (int x = 0; x < mapXML->child("map").attribute("width").as_int(); ++x)
+		for (int y = 0; y < mapXML->child("map").attribute("height").as_uint(); ++y)
 		{
-			switch(tile.attribute("gid").as_int() - 1) {
-			case 0:
-				break;
-			case 1:
-				
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				addPrimitiveToMap(CUBE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 6:
-				addPrimitiveToMap(SPHERE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 7:
-				break;
-			case 8:
-				break;
-			case 9:
-				addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE , 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 10:
-				addPrimitiveToMap(CIRCUIT_ROTA_FRONT_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 11:
-				addPrimitiveToMap(CIRCUIT_ROTA_FRONT_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 12:
-				addPrimitiveToMap(CIRCUIT_ROTA_BACK_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 13:
-				addPrimitiveToMap(CIRCUIT_ROTA_BACK_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			case 14:
-				addPrimitiveToMap(CIRCUIT_RECTA_LATERAL, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
-				break;
-			}
+			for (int x = 0; x < mapXML->child("map").attribute("width").as_int(); ++x)
+			{
+				switch (tile.attribute("gid").as_int() - 1) {
+				case 0:
+					break;
+				case 1:
+
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					addPrimitiveToMap(CUBE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 6:
+					addPrimitiveToMap(SPHERE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 7:
+					break;
+				case 8:
+					break;
+				case 9:
+					addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 10:
+					addPrimitiveToMap(CIRCUIT_ROTA_FRONT_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 11:
+					addPrimitiveToMap(CIRCUIT_ROTA_FRONT_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 12:
+					addPrimitiveToMap(CIRCUIT_ROTA_BACK_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 13:
+					addPrimitiveToMap(CIRCUIT_ROTA_BACK_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				case 14:
+					addPrimitiveToMap(CIRCUIT_RECTA_LATERAL, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					break;
+				}
 				tile = tile.next_sibling("tile");
+			}
 		}
+		layer = layer.next_sibling("layer");
 	}
 }
 
@@ -177,4 +182,8 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		App->physics->AddBody(cube2, 0);
 		break;
 	}
+}
+
+void ModuleSceneIntro::addSensor(int x, int y) {
+	
 }
