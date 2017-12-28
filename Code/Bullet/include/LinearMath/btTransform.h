@@ -47,7 +47,7 @@ public:
    * @param c Translation from Vector (default 0,0,0) */
 	explicit SIMD_FORCE_INLINE btTransform(const btQuaternion& q, 
 		const btVector3& c = btVector3(btScalar(0), btScalar(0), btScalar(0))) 
-		: m_basis(q),
+		: m_basis(q),	
 		m_origin(c)
 	{}
 

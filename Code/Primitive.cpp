@@ -277,9 +277,16 @@ void Plane::InnerRender() const
 
 // CUSTOM ==========================
 
-Custom::Custom() {
+Custom::Custom() : Primitive() {
+	type = Primitive_Custom;
 	loadOBJ("meshes/cubu.obj", vertices, uvs, normals);
+	this->SetPos(0, 0, 0);
+}
 
+Custom::Custom(int x, int y, int z) : Primitive() {
+	type = Primitive_Custom;
+	loadOBJ("meshes/cubu.obj", vertices, uvs, normals);
+	this->SetPos(x, y, z);
 }
 
 
@@ -289,11 +296,18 @@ void Custom::InnerRender() const {
 
 	glBegin(GL_LINES);
 	std::vector <vec3> vecAux = vertices;
-	for (int i = vertices.size(); i != 0; i--) {
+	while (1) {
 		vec3 *aux = vecAux.data();
+		if (aux == nullptr)
+			break;
 		glVertex3f(aux->x, aux->y, aux->z);
 		vecAux.pop_back();
 	}
+	//for (int i = vertices.size(); i != 0; i--) {
+	//	vec3 *aux = vecAux.data();
+	//	glVertex3f(aux->x, aux->y, aux->z);
+	//	vecAux.pop_back();
+	//}
 
 	glEnd();
 }

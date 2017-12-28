@@ -99,7 +99,9 @@ public:
 };
 
 class Custom : public Primitive {
+public:
 	Custom();
+	Custom(int x , int y, int z);
 	void InnerRender() const;
 public:
 	std::vector< vec3 > vertices;

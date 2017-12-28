@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "Primitive.h"
 #include "PhysBody3D.h"
 
 #include "ModulePlayer.h"
@@ -41,8 +40,12 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+	Custom c(1, 1, 1);
+	//p.axis = true;
+	c.axis = true;
+	//p.Render();
+	c.Render();
+
 
 	return UPDATE_CONTINUE;
 }
