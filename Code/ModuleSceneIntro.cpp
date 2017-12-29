@@ -18,7 +18,10 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-
+	Plane p2(0,1,0,0);
+	Custom c2(1,1,1);
+	p = p2;
+	c = c2;
 	LOG("Loading Intro assets");
 	bool ret = true;
 	createMap1();
@@ -39,8 +42,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	Custom c(1, 1, 1);
+
+
 	//p.axis = true;
 	c.axis = true;
 	//p.Render();

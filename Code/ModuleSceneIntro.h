@@ -52,4 +52,7 @@ public:
 	PhysMotor3D* right_wheel;
 
 	pugi::xml_document* mapXML;
+
+	Plane p;
+	Custom c;
 };

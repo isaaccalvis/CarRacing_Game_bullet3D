@@ -291,23 +291,16 @@ Custom::Custom(int x, int y, int z) : Primitive() {
 
 
 // NO TE PERQUE FUNCIONAR !!!!!!
+// El tema esta en que no se com llegir un vector, un cop el sapiga recorrer guay
 void Custom::InnerRender() const {
 	glLineWidth(1.0f);
 
 	glBegin(GL_LINES);
-	std::vector <vec3> vecAux = vertices;
-	while (1) {
-		vec3 *aux = vecAux.data();
-		if (aux == nullptr)
-			break;
-		glVertex3f(aux->x, aux->y, aux->z);
-		vecAux.pop_back();
+
+	for (int i = 0; i < vertices.size(); i++) {
+		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
 	}
-	//for (int i = vertices.size(); i != 0; i--) {
-	//	vec3 *aux = vecAux.data();
-	//	glVertex3f(aux->x, aux->y, aux->z);
-	//	vecAux.pop_back();
-	//}
+	printf_s("%i ", vertices.size());
 
 	glEnd();
 }
