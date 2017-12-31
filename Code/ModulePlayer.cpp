@@ -19,8 +19,8 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 	VehicleInfo car = createVehicle(VEHICLE_CAR);
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(10, 0, 0);
-	
+	vehicle->SetPos(0, 0, 0);
+
 	return true;
 }
 
@@ -79,6 +79,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
 		App->physics->Start();
+		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
 		// crea vehicle
 		VehicleInfo car = createVehicle(VEHICLE_CAR);
@@ -86,41 +87,88 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
-	{
-		vehicle->info.deleteThisObject = true;
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(VEHICLE_CAR);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x , App->camera->Position.y + 10, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
+	{
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
+		App->physics->deleteVehiclesFromWorld();
+		VehicleInfo car = createVehicle(VEHICLE_CAR);
+		vehicle = App->physics->AddVehicle(car);
+		vehicle->SetPos(0 ,0 ,0);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(VEHICLE_MOTOR_BIKE);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(VEHICLE_TRUCK);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(VEHICLE_TRIPODE);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		App->physics->CleanWorld();
+		App->physics->CleanBodies();
+		App->physics->CleanVehicle();
+		App->physics->Start();
+		App->scene_intro->CleanMeshes();
+		App->scene_intro->createMap1();
+
 		vehicle->info.deleteThisObject = true;
 		App->physics->deleteVehiclesFromWorld();
 		VehicleInfo car = createVehicle(VEHICLE_STRAMBOTIC);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y - 1, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
 	}
 
 	vehicle->ApplyEngineForce(acceleration);

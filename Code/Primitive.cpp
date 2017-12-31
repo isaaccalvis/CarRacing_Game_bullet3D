@@ -279,14 +279,17 @@ void Plane::InnerRender() const
 
 Custom::Custom() : Primitive() {
 	type = Primitive_Custom;
-	loadOBJ("meshes/cubu.obj", vertices, uvs, normals);
 	this->SetPos(0, 0, 0);
 }
 
-Custom::Custom(int x, int y, int z) : Primitive() {
+Custom::Custom(const char* path, int x, int y, int z, int degToRotate = 0) : Primitive() {
 	type = Primitive_Custom;
-	loadOBJ("meshes/cubu.obj", vertices, uvs, normals);
+	loadOBJ(path, vertices, uvs, normals);
 	this->SetPos(x, y, z);
+	if (degToRotate != 0)
+		this->SetRotation(degToRotate, vec3(0, 90, 0));
+	this->x = x;
+	this->y = z;
 }
 
 void Custom::InnerRender() const {
@@ -299,10 +302,16 @@ void Custom::InnerRender() const {
 	}
 	glEnd();
 
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-	for (int i = 0; i < vertices.size(); i++) {
-		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-	}
-	glEnd();
+	// PINTAR LINEES DE MALLA
+	//glBegin(GL_LINES);
+	//glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	//for (int i = 0; i < vertices.size(); i++) {
+	//	glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+	//}
+	//glEnd();
+}
+
+void Primitive::getXY(int &x, int &y) {
+	x = this->x;
+	y = this->y;
 }

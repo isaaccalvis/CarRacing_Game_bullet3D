@@ -34,8 +34,10 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
+	void CleanMeshes();
 	void createMap1();
 	void addPrimitiveToMap(primitiveTypes type, int x , int y, int z, int radOrX, int Y, int Z);
+	void addMeshToMap(PrimitiveTypes type, char* path, int x, int y, int z, int degToRotate);
 public:
 
 	PhysBody3D* pb_chassis;
@@ -52,6 +54,7 @@ public:
 
 	pugi::xml_document* mapXML;
 
+	p2List<Primitive*> primitiveListMesh;
+
 	Plane p;
-	Custom c;
 };

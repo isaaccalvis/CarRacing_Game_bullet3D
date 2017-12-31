@@ -30,6 +30,9 @@ public:
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
 
+	void getXY(int &x, int &y);
+protected:
+	int x = 0, y = 0;
 public:
 	
 	Color color;
@@ -47,6 +50,7 @@ public :
 	Cube();
 	Cube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
+
 public:
 	vec3 size;
 };
@@ -58,6 +62,7 @@ public:
 	Sphere();
 	Sphere(float radius);
 	void InnerRender() const;
+
 public:
 	float radius;
 };
@@ -69,6 +74,7 @@ public:
 	Cylinder();
 	Cylinder(float radius, float height);
 	void InnerRender() const;
+
 public:
 	float radius;
 	float height;
@@ -81,6 +87,7 @@ public:
 	Line();
 	Line(float x, float y, float z);
 	void InnerRender() const;
+
 public:
 	vec3 origin;
 	vec3 destination;
@@ -93,6 +100,7 @@ public:
 	Plane();
 	Plane(float x, float y, float z, float d);
 	void InnerRender() const;
+
 public:
 	vec3 normal;
 	float constant;
@@ -101,7 +109,7 @@ public:
 class Custom : public Primitive {
 public:
 	Custom();
-	Custom(int x , int y, int z);
+	Custom(const char* path, int x , int y, int z, int degToRotate);
 	void InnerRender() const;
 public:
 	std::vector< vec3 > vertices;

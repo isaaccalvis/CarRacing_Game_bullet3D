@@ -2,11 +2,14 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "PhysBody3D.h"
+#include "ModulePlayer.h"
+#include "PhysVehicle3D.h"
 
 #include "ModulePlayer.h"
 
 #define SIZE 3
 #define SPACE_PART_CIRCUIT 4
+#define RENDER_DISTANCE 30
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -19,9 +22,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start()
 {
 	Plane p2(0,1,0,0);
-	Custom c2(1,1,1);
 	p = p2;
-	c = c2;
 	LOG("Loading Intro assets");
 	bool ret = true;
 	createMap1();
@@ -42,12 +43,21 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-
-
-	//p.axis = true;
-	c.axis = true;
-	//p.Render();
-	c.Render();
+	p2List_item<Primitive*>* rec = primitiveListMesh.getFirst();
+	while (rec != nullptr) {
+		int xx, yy;
+		rec->data->getXY(xx, yy);
+		int xFinal = xx - (int)App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX();
+		if (xFinal < 0)
+			xFinal *= -1;
+		int yFinal = yy - (int)App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ();// Sha de pillar la Z perque Y es alçada
+		if (yFinal < 0)
+			yFinal *= -1;
+		if (xFinal < RENDER_DISTANCE && yFinal < RENDER_DISTANCE)
+			rec->data->Render();
+		rec = rec->next;
+	}
+	p.Render();
 
 
 	return UPDATE_CONTINUE;
@@ -137,7 +147,9 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube(radOrX, Y , Z * SPACE_PART_CIRCUIT);
 		Cube cube2(radOrX, Y , Z * SPACE_PART_CIRCUIT);
 		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT/2, y, z );
+		addMeshToMap(Primitive_Custom, "meshes/balla2.obj", x + SIZE * SPACE_PART_CIRCUIT / 2.3f, 0, z, 0);
 		cube2.SetPos(x - SIZE * SPACE_PART_CIRCUIT/2, y, z );
+		addMeshToMap(Primitive_Custom, "meshes/balla2.obj", x - SIZE * SPACE_PART_CIRCUIT / 2.3f, 0, z, 0);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 		break;
@@ -147,6 +159,7 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x - SIZE * SPACE_PART_CIRCUIT / 2, y, z);
 		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/esquina.obj", x - SIZE * SPACE_PART_CIRCUIT / 2.3f, 0, z, 0);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 	}
@@ -156,6 +169,7 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
 		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/esquina.obj", x , 0, z - SIZE * SPACE_PART_CIRCUIT / 2.3f, 270);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 	}
@@ -165,6 +179,7 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x - SIZE * SPACE_PART_CIRCUIT / 2, y, z);
 		cube2.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/esquina.obj", x, 0, z + SIZE * SPACE_PART_CIRCUIT / 2.3f, 90);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 	}
@@ -174,6 +189,7 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x + SIZE * SPACE_PART_CIRCUIT / 2, y, z);
 		cube2.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/esquina.obj", x + SIZE * SPACE_PART_CIRCUIT / 2.3f, 0, z , 180);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 		
@@ -183,9 +199,33 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		Cube cube(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		Cube cube2(radOrX * SPACE_PART_CIRCUIT, Y, Z);
 		cube.SetPos(x, y, z + SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/balla2.obj", x, 0, z + SIZE * SPACE_PART_CIRCUIT / 2.3f, 90);
 		cube2.SetPos(x, y, z - SIZE * SPACE_PART_CIRCUIT / 2);
+		addMeshToMap(Primitive_Custom, "meshes/balla2.obj", x, 0, z - SIZE * SPACE_PART_CIRCUIT / 2.3f, 90);
 		App->physics->AddBody(cube, 0);
 		App->physics->AddBody(cube2, 0);
 		break;
+	}
+}
+
+void ModuleSceneIntro::addMeshToMap(PrimitiveTypes type, char* path, int x, int y, int z, int degToRotate = 0) {
+	switch (type) {
+	case	Primitive_Plane:
+	case	Primitive_Cube:
+	case	Primitive_Sphere:
+	case	Primitive_Cylinder:
+	case	Primitive_Custom: {
+		Primitive* item = new Custom(path,x,y,z,degToRotate);
+		primitiveListMesh.add(item);
+	}
+	}
+}
+
+void ModuleSceneIntro::CleanMeshes() {
+	p2List_item<Primitive*>* rec = primitiveListMesh.getFirst();
+	while (rec != nullptr) {
+		p2List_item<Primitive*>* aux = rec;
+		rec = rec->next;
+		primitiveListMesh.del(aux);
 	}
 }
