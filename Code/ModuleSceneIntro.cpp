@@ -189,7 +189,3 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 		break;
 	}
 }
-
-void ModuleSceneIntro::addSensor(int x, int y) {
-	
-}

@@ -289,18 +289,20 @@ Custom::Custom(int x, int y, int z) : Primitive() {
 	this->SetPos(x, y, z);
 }
 
-
-// NO TE PERQUE FUNCIONAR !!!!!!
-// El tema esta en que no se com llegir un vector, un cop el sapiga recorrer guay
 void Custom::InnerRender() const {
 	glLineWidth(1.0f);
 
-	glBegin(GL_LINES);
-
+	glBegin(GL_TRIANGLES);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	for (int i = 0; i < vertices.size(); i++) {
 		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
 	}
-	printf_s("%i ", vertices.size());
+	glEnd();
 
+	glBegin(GL_LINES);
+	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	for (int i = 0; i < vertices.size(); i++) {
+		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+	}
 	glEnd();
 }

@@ -36,7 +36,6 @@ public:
 
 	void createMap1();
 	void addPrimitiveToMap(primitiveTypes type, int x , int y, int z, int radOrX, int Y, int Z);
-	void addSensor(int x, int y);
 public:
 
 	PhysBody3D* pb_chassis;
