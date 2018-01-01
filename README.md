@@ -26,3 +26,7 @@ Your map will be automatically loaded in the game. (You don't need to close the 
 In case that key "p" don't open Tiled.exe, go manually to the game folder, search at
 /Game folder Tiled.exe, open it, and then inside the program open the document mapa.tmx
 Then close Tiled and try again.
+
+=======Disable_Graphic_Options======
+F1-------------->Disable debug graphical mode 
+F2-------------->Disable 3D meshes

@@ -87,12 +87,20 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		if (drawMeshes == false)
+			drawMeshes = true;
+		else
+			drawMeshes = false;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
+		App->scene_intro->CleanUp();
 		App->scene_intro->createMap1();
 
 		App->physics->deleteVehiclesFromWorld();

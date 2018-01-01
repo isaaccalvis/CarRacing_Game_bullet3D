@@ -36,13 +36,14 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
+	mapXML->reset();
 	return true;
 }
 
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	// AIXÒ ES PER PINTAR LA MALLA, ES CAPA AMB EL BOTO F1 I UNA VARIABLE BOOL A PLAYER !!!
 	p2List_item<Primitive*>* rec = primitiveListMesh.getFirst();
 	while (rec != nullptr) {
 		int xx, yy;
@@ -54,11 +55,11 @@ update_status ModuleSceneIntro::Update(float dt)
 		if (yFinal < 0)
 			yFinal *= -1;
 		if (xFinal < RENDER_DISTANCE && yFinal < RENDER_DISTANCE)
-			rec->data->Render();
+			if (App->player->drawMeshes)
+				rec->data->Render();
 		rec = rec->next;
 	}
 	p.Render();
-
 
 	return UPDATE_CONTINUE;
 }
@@ -85,7 +86,6 @@ void ModuleSceneIntro::createMap1() {
 				case 0:
 					break;
 				case 1:
-
 					break;
 				case 2:
 					break;

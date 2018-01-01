@@ -35,4 +35,5 @@ public:
 	float acceleration;
 	float brake;
 	float rotationCameraRespectVehicle = 0;
+	bool drawMeshes = true;
 };

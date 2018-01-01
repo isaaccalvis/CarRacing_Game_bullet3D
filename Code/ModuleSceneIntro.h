@@ -52,9 +52,8 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
-	pugi::xml_document* mapXML;
-
 	p2List<Primitive*> primitiveListMesh;
+	pugi::xml_document* mapXML;
 
 	Plane p;
 };

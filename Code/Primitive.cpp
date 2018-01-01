@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "glut/glut.h"
 #include "LoadOBJ.h"
+#include "ModulePlayer.h"
 
 #pragma comment (lib, "glut/glut32.lib")
 
