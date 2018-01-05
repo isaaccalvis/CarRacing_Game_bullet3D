@@ -61,14 +61,135 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	p.Render();
 
+
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
+void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
+	if (body1 == App->player->vehicle) {
+		if (body2 == sensor[0]) {
+			if (sensorState[0] == SENSOR_EXIT) {
+				sensorState[0] = SENSOR_ENTER;
+				if (sensorActive[0] == false)
+					sensorActive[0] = true;
+				else
+					sensorActive[0] = false;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body2 == sensor[1]) {
+			if (sensorState[1] == SENSOR_EXIT) {
+				sensorState[1] = SENSOR_ENTER;
+				if (sensorActive[1] == false)
+					sensorActive[1] = true;
+				else
+					sensorActive[1] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body2 == sensor[2]) {
+			if (sensorState[2] == SENSOR_EXIT) {
+				sensorState[2] = SENSOR_ENTER;
+				if (sensorActive[2] == false)
+					sensorActive[2] = true;
+				else
+					sensorActive[2] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body2 == sensor[3]) {
+			if (sensorState[3] == SENSOR_EXIT) {
+				sensorState[3] = SENSOR_ENTER;
+				if (sensorActive[3] == false)
+					sensorActive[3] = true;
+				else
+					sensorActive[3] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else {
+			sensorState[0] = SENSOR_EXIT;
+			sensorState[1] = SENSOR_EXIT;
+			sensorState[2] = SENSOR_EXIT;
+			sensorState[3] = SENSOR_EXIT;
+		}
+	}
+	else if (body2 == App->player->vehicle) {
+		if (body1 == sensor[0]) {
+			if (sensorState[0] == SENSOR_EXIT) {
+				sensorState[0] = SENSOR_ENTER;
+				if (sensorActive[0] == false)
+					sensorActive[0] = true;
+				else
+					sensorActive[0] = false;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body1 == sensor[1]) {
+			if (sensorState[1] == SENSOR_EXIT) {
+				sensorState[1] = SENSOR_ENTER;
+				if (sensorActive[1] == false)
+					sensorActive[1] = true;
+				else
+					sensorActive[1] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body1 == sensor[2]) {
+			if (sensorState[2] == SENSOR_EXIT) {
+				sensorState[2] = SENSOR_ENTER;
+				if (sensorActive[2] == false)
+					sensorActive[2] = true;
+				else
+					sensorActive[2] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[3] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else if (body1 == sensor[3]) {
+			if (sensorState[3] == SENSOR_EXIT) {
+				sensorState[3] = SENSOR_ENTER;
+				if (sensorActive[3] == false)
+					sensorActive[3] = true;
+				else
+					sensorActive[3] = false;
+				sensorState[0] = SENSOR_EXIT;
+				sensorState[1] = SENSOR_EXIT;
+				sensorState[2] = SENSOR_EXIT;
+				printf_s("%i\n", sensorActive[0]);
+			}
+		}
+		else {
+			sensorState[0] = SENSOR_EXIT;
+			sensorState[1] = SENSOR_EXIT;
+			sensorState[2] = SENSOR_EXIT;
+			sensorState[3] = SENSOR_EXIT;
+		}
+	}
 }
 
 void ModuleSceneIntro::createMap1() {
+	netejarSensor();
 	mapXML = new pugi::xml_document;
 	mapXML->load_file("mapa.tmx");
 	pugi::xml_node layer = mapXML->child("map").child("layer");
@@ -91,7 +212,38 @@ void ModuleSceneIntro::createMap1() {
 					break;
 				case 3:
 					break;
-				case 4:
+				case 4: {
+					Cube seCub(SIZE, SIZE, SIZE);
+					seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE);
+					// Aixo son els sensors
+					if (sensor[0] == nullptr) {
+						sensor[0] = App->physics->AddBody(seCub, 0);
+						sensor[0]->SetAsSensor(true);
+						sensor[0]->collision_listeners.add(this);
+					}else if (sensor[1] == nullptr) {
+						sensor[1] = App->physics->AddBody(seCub, 0);
+						sensor[1]->SetAsSensor(true);
+						sensor[1]->collision_listeners.add(this);
+					}
+					else if (sensor[2] == nullptr) {
+						sensor[2] = App->physics->AddBody(seCub, 0);
+						sensor[2]->SetAsSensor(true);
+						sensor[2]->collision_listeners.add(this);
+					}
+					else if (sensor[3] == nullptr) {
+						sensor[3] = App->physics->AddBody(seCub, 0);
+						sensor[3]->SetAsSensor(true);
+						sensor[3]->collision_listeners.add(this);
+					}
+					else {
+						printf_s("You have added a sensor that can't be placed ! (sensor max = 4)");
+						netejarSensor();
+						system("mapa.tmx");
+						createMap1();
+						return;
+
+					}
+				}
 					break;
 				case 5:
 					addPrimitiveToMap(CUBE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
@@ -227,5 +379,45 @@ void ModuleSceneIntro::CleanMeshes() {
 		p2List_item<Primitive*>* aux = rec;
 		rec = rec->next;
 		primitiveListMesh.del(aux);
+	}
+}
+
+void ModuleSceneIntro::netejarSensor() {
+	sensor[0] = nullptr;
+	sensor[1] = nullptr;
+	sensor[2] = nullptr;
+	sensor[3] = nullptr;
+
+	sensorState[0] = SENSOR_EXIT;
+	sensorState[1] = SENSOR_EXIT;
+	sensorState[2] = SENSOR_EXIT;
+	sensorState[3] = SENSOR_EXIT;
+
+	sensorActive[0] = false;
+	sensorActive[1] = false;
+	sensorActive[2] = false;
+	sensorActive[3] = false;
+}
+
+void ModuleSceneIntro::comprobarMetaDeSensors() {
+	if (sensor[3] != nullptr) {
+		if (sensorActive[0] && sensorActive[1] && sensorActive[2] && sensorActive[3]) {
+			printf_s("meta !!\n");
+		}
+	}
+	else if (sensor[3] == nullptr) {	// Aixo vol dir que nomes hi ha 3 sensors
+		if (sensorActive[0] && sensorActive[1] && sensorActive[2]) {
+			printf_s("meta !!\n");
+		}
+	}
+	else if (sensor[2] == nullptr) {
+		if (sensorActive[0] && sensorActive[1]) {
+			printf_s("meta !!\n");
+		}
+	}
+	else if (sensor[1] == nullptr) {
+		if (sensorActive[0]) {
+			printf_s("meta !!\n");
+		}
 	}
 }

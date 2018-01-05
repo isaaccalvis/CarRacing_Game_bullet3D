@@ -3,6 +3,11 @@
 
 #include "p2List.h"
 
+enum COLLISION_STATE {
+	COLLISION_ENTER,
+	COLLISION_EXIT
+};
+
 class btRigidBody;
 class Module;
 
@@ -22,7 +27,9 @@ public:
 
 private:
 	btRigidBody* body = nullptr;
+protected:
 	bool is_sensor = false;
+	COLLISION_STATE col_state = COLLISION_EXIT;
 public:
 	p2List<Module*> collision_listeners;
 };

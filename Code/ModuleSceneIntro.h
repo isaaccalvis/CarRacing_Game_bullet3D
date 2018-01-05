@@ -19,6 +19,11 @@ enum primitiveTypes {
 	CIRCUIT_RECTA_LATERAL
 };
 
+enum SENSOR_STATE {
+	SENSOR_ENTER,
+	SENSOR_EXIT
+};
+
 struct PhysBody3D;
 struct PhysMotor3D;
 
@@ -38,6 +43,10 @@ public:
 	void createMap1();
 	void addPrimitiveToMap(primitiveTypes type, int x , int y, int z, int radOrX, int Y, int Z);
 	void addMeshToMap(PrimitiveTypes type, char* path, int x, int y, int z, int degToRotate);
+
+	// Temes de sensors
+	void netejarSensor();
+	void comprobarMetaDeSensors();
 public:
 
 	PhysBody3D* pb_chassis;
@@ -56,4 +65,7 @@ public:
 	pugi::xml_document* mapXML;
 
 	Plane p;
+	PhysBody3D* sensor[4];
+	SENSOR_STATE sensorState[4];
+	bool sensorActive[4];
 };

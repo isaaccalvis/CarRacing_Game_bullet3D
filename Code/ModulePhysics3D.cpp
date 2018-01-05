@@ -427,3 +427,8 @@ void ModulePhysics3D::deleteVehiclesFromWorld() {
 			rec = rec->next;
 	}
 }
+
+bool ModulePhysics3D::CollBetween2RigidBodies(PhysBody3D& bodyA, PhysBody3D& bodyB) {
+
+	return true;
+}
