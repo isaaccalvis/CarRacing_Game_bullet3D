@@ -297,7 +297,7 @@ void Custom::InnerRender() const {
 	glLineWidth(1.0f);
 
 	glBegin(GL_TRIANGLES);
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glColor4f(1.5f, 1.5f, 1.5f, 1.5f);
 	for (int i = 0; i < vertices.size(); i++) {
 		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
 	}

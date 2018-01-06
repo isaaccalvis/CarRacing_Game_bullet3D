@@ -35,9 +35,12 @@ public:
 	void CleanWorld();
 	void CleanBodies();
 	void CleanVehicle();
+	void CleanConstraints();
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
+	void AddConstraintSlider(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
+
 	void deleteVehiclesFromWorld();
 	bool CollBetween2RigidBodies(PhysBody3D& bodyA, PhysBody3D& bodyB);
 private:

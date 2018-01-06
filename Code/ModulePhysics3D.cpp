@@ -50,6 +50,9 @@ bool ModulePhysics3D::Start()
 {
 	LOG("Creating Physics environment");
 
+	App->scene_intro->getLastResetGetTicks = SDL_GetTicks();
+	App->scene_intro->loops = 0;
+
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	world->setDebugDrawer(debug_draw);
 	world->setGravity(GRAVITY);
@@ -71,6 +74,7 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
+	int comprobCollExitSensor = 0;
 	world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
@@ -91,20 +95,30 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
 				while(item)
 				{
-					item->data->OnCollision(pbodyA, pbodyB);
+					if (item->data->OnCollision(pbodyA, pbodyB) != 0) {
+						comprobCollExitSensor++;
+					}
 					item = item->next;
 				}
 
 				item = pbodyB->collision_listeners.getFirst();
 				while(item)
 				{
-					item->data->OnCollision(pbodyB, pbodyA);
+					if (item->data->OnCollision(pbodyB, pbodyA) != 0) {
+						comprobCollExitSensor++;
+					}
 					item = item->next;
 				}
 			}
 		}
 	}
 
+	if (comprobCollExitSensor == 0) {
+		App->scene_intro->sensorState[0] = SENSOR_EXIT;
+		App->scene_intro->sensorState[1] = SENSOR_EXIT;
+		App->scene_intro->sensorState[2] = SENSOR_EXIT;
+		App->scene_intro->sensorState[3] = SENSOR_EXIT;
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -206,6 +220,18 @@ void ModulePhysics3D::CleanBodies() {
 
 void ModulePhysics3D::CleanVehicle() {
 	vehicles.clear();
+}
+
+void ModulePhysics3D::CleanConstraints() {
+	//p2List_item<btTypedConstraint*>* rec = constraints.getFirst();
+	//while (rec != nullptr) {
+	//	p2List_item<btTypedConstraint*>* aux = rec;
+	//	constraints.del(aux);
+	//	rec = rec->next;
+	//}
+	for (p2List_item<btTypedConstraint*>* item = constraints.getFirst(); item; item = item->next)
+		delete item->data;
+	constraints.clear();
 }
 
 // ---------------------------------------------------------
@@ -366,18 +392,31 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, con
 
 void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
 {
-	btHingeConstraint* hinge = new btHingeConstraint(
-		*(bodyA.body), 
-		*(bodyB.body), 
+	//btHingeConstraint* hinge = new btHingeConstraint(
+	btTypedConstraint* hinge = new btHingeConstraint(
+		*(bodyA.body),
+		*(bodyB.body),
 		btVector3(anchorA.x, anchorA.y, anchorA.z),
 		btVector3(anchorB.x, anchorB.y, anchorB.z),
-		btVector3(axisA.x, axisA.y, axisA.z), 
+		btVector3(axisA.x, axisA.y, axisA.z),
 		btVector3(axisB.x, axisB.y, axisB.z));
 
 	world->addConstraint(hinge, disable_collision);
 	constraints.add(hinge);
 	hinge->setDbgDrawSize(2.0f);
 }
+
+void ModulePhysics3D::AddConstraintSlider(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB) {
+	btTransform t1;
+	btTransform t2;
+	t1.setOrigin(btVector3(anchorA.x, anchorA.y, anchorA.z));
+	t2.setOrigin(btVector3(anchorB.x, anchorB.y, anchorB.z));
+	btTypedConstraint* slider = new btSliderConstraint(*(bodyA.body), *(bodyB.body), t1, t2, false );
+	world->addConstraint(slider);
+	constraints.add(slider);
+	slider->setDbgDrawSize(2.0f);
+}
+
 
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)

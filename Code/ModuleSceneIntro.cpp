@@ -65,9 +65,11 @@ update_status ModuleSceneIntro::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
+int ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
+	int cont = 0;
 	if (body1 == App->player->vehicle) {
 		if (body2 == sensor[0]) {
+			cont++;
 			if (sensorState[0] == SENSOR_EXIT) {
 				sensorState[0] = SENSOR_ENTER;
 				if (sensorActive[0] == false)
@@ -77,10 +79,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
 			}
+			comprobarMetaDeSensors(0);
 		}
 		else if (body2 == sensor[1]) {
+			cont++;
 			if (sensorState[1] == SENSOR_EXIT) {
 				sensorState[1] = SENSOR_ENTER;
 				if (sensorActive[1] == false)
@@ -90,10 +93,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
 			}
+			comprobarMetaDeSensors(1);
 		}
 		else if (body2 == sensor[2]) {
+			cont++;
 			if (sensorState[2] == SENSOR_EXIT) {
 				sensorState[2] = SENSOR_ENTER;
 				if (sensorActive[2] == false)
@@ -103,10 +107,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(2);
 			}
 		}
 		else if (body2 == sensor[3]) {
+			cont++;
 			if (sensorState[3] == SENSOR_EXIT) {
 				sensorState[3] = SENSOR_ENTER;
 				if (sensorActive[3] == false)
@@ -116,18 +121,13 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(3);
 			}
-		}
-		else {
-			sensorState[0] = SENSOR_EXIT;
-			sensorState[1] = SENSOR_EXIT;
-			sensorState[2] = SENSOR_EXIT;
-			sensorState[3] = SENSOR_EXIT;
 		}
 	}
 	else if (body2 == App->player->vehicle) {
 		if (body1 == sensor[0]) {
+			cont++;
 			if (sensorState[0] == SENSOR_EXIT) {
 				sensorState[0] = SENSOR_ENTER;
 				if (sensorActive[0] == false)
@@ -137,10 +137,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(0);
 			}
 		}
 		else if (body1 == sensor[1]) {
+			cont++;
 			if (sensorState[1] == SENSOR_EXIT) {
 				sensorState[1] = SENSOR_ENTER;
 				if (sensorActive[1] == false)
@@ -150,10 +151,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(1);
 			}
 		}
 		else if (body1 == sensor[2]) {
+			cont++;
 			if (sensorState[2] == SENSOR_EXIT) {
 				sensorState[2] = SENSOR_ENTER;
 				if (sensorActive[2] == false)
@@ -163,10 +165,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[3] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(2);
 			}
 		}
 		else if (body1 == sensor[3]) {
+			cont++;
 			if (sensorState[3] == SENSOR_EXIT) {
 				sensorState[3] = SENSOR_ENTER;
 				if (sensorActive[3] == false)
@@ -176,20 +179,16 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 				sensorState[0] = SENSOR_EXIT;
 				sensorState[1] = SENSOR_EXIT;
 				sensorState[2] = SENSOR_EXIT;
-				printf_s("%i\n", sensorActive[0]);
+				comprobarMetaDeSensors(3);
 			}
 		}
-		else {
-			sensorState[0] = SENSOR_EXIT;
-			sensorState[1] = SENSOR_EXIT;
-			sensorState[2] = SENSOR_EXIT;
-			sensorState[3] = SENSOR_EXIT;
-		}
 	}
+
+	return cont;
 }
 
 void ModuleSceneIntro::createMap1() {
-	netejarSensor();
+	netejarSensor(true);
 	mapXML = new pugi::xml_document;
 	mapXML->load_file("mapa.tmx");
 	pugi::xml_node layer = mapXML->child("map").child("layer");
@@ -206,14 +205,56 @@ void ModuleSceneIntro::createMap1() {
 				switch (tile.attribute("gid").as_int() - 1) {
 				case 0:
 					break;
-				case 1:
+				case 1: {
+					//Cube cube(SIZE, SIZE, SIZE);
+					//Cube cube2(SIZE, SIZE, SIZE);
+					//cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE);
+					//cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+					//PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+					//PhysBody3D *c2 = App->physics->AddBody(cube2, 1);
+
+					//App->physics->AddConstraintP2P(*c1, *c2, vec3(2, 2, 2), vec3(2, 2, 2));
+					Cube cube(SIZE, SIZE, SIZE);
+					Cube cube2(SIZE, SIZE, SIZE);
+					Cube cube3(SIZE, SIZE, SIZE);
+					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
+					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+					cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
+					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+					PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
+
+					App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, -5, -5), vec3(1, 0, 0), vec3(1, 0, 0), false);
+
+				}
 					break;
-				case 2:
+				case 2: {
+					Cube cube(SIZE, SIZE, SIZE);
+					Cube cube2(SIZE, SIZE, SIZE);
+					Cube cube3(SIZE, SIZE, SIZE);
+					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
+					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+					cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
+					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+					PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
+
+					App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, 5, 5), vec3(1, 0, 0), vec3(1, 0, 0), false);
+				}
 					break;
-				case 3:
+				case 3: {
+					Cube cube(SIZE, SIZE, SIZE);
+					Cube cube2(SIZE, SIZE, SIZE);
+					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
+					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+
+				//	App->physics->AddConstraintSlider(*c1, *c2, vec3(0, 0, 0), vec3(1, 1, 1));
+				}
 					break;
 				case 4: {
-					Cube seCub(SIZE, SIZE, SIZE);
+					Cube seCub(SIZE  * 2, SIZE, SIZE * 2);
 					seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE);
 					// Aixo son els sensors
 					if (sensor[0] == nullptr) {
@@ -241,15 +282,14 @@ void ModuleSceneIntro::createMap1() {
 						system("mapa.tmx");
 						createMap1();
 						return;
-
 					}
 				}
 					break;
 				case 5:
-					addPrimitiveToMap(CUBE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+					addPrimitiveToMap(CUBE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
 					break;
 				case 6:
-					addPrimitiveToMap(SPHERE, x * SIZE, 0, y * SIZE, SIZE, SIZE, SIZE);
+					addPrimitiveToMap(SPHERE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
 					break;
 				case 7:
 					break;
@@ -286,13 +326,13 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 	case CUBE: {
 		Cube cube(radOrX, Y, Z);
 		cube.SetPos(x, y, z);
-		App->physics->AddBody(cube, 0);
+		App->physics->AddBody(cube, 1);
 		break;
 	}
 	case SPHERE: {
 		Sphere sphere(radOrX);
 		sphere.SetPos(x, y, z);
-		App->physics->AddBody(sphere, 0);
+		App->physics->AddBody(sphere, 1);
 		break;
 	}
 	case CIRCUIT_RECTA: {
@@ -382,11 +422,13 @@ void ModuleSceneIntro::CleanMeshes() {
 	}
 }
 
-void ModuleSceneIntro::netejarSensor() {
-	sensor[0] = nullptr;
-	sensor[1] = nullptr;
-	sensor[2] = nullptr;
-	sensor[3] = nullptr;
+void ModuleSceneIntro::netejarSensor(bool netejaTotal) {
+	if (netejaTotal == true) {
+		sensor[0] = nullptr;
+		sensor[1] = nullptr;
+		sensor[2] = nullptr;
+		sensor[3] = nullptr;
+	}
 
 	sensorState[0] = SENSOR_EXIT;
 	sensorState[1] = SENSOR_EXIT;
@@ -399,25 +441,32 @@ void ModuleSceneIntro::netejarSensor() {
 	sensorActive[3] = false;
 }
 
-void ModuleSceneIntro::comprobarMetaDeSensors() {
+void ModuleSceneIntro::comprobarMetaDeSensors(int thisSensor) {
 	if (sensor[3] != nullptr) {
 		if (sensorActive[0] && sensorActive[1] && sensorActive[2] && sensorActive[3]) {
-			printf_s("meta !!\n");
-		}
-	}
-	else if (sensor[3] == nullptr) {	// Aixo vol dir que nomes hi ha 3 sensors
-		if (sensorActive[0] && sensorActive[1] && sensorActive[2]) {
-			printf_s("meta !!\n");
-		}
-	}
-	else if (sensor[2] == nullptr) {
-		if (sensorActive[0] && sensorActive[1]) {
-			printf_s("meta !!\n");
+			loops++;
+			netejarSensor(false);
 		}
 	}
 	else if (sensor[1] == nullptr) {
 		if (sensorActive[0]) {
-			printf_s("meta !!\n");
+			loops++;
+			netejarSensor(false);
 		}
+	}
+	else if (sensor[2] == nullptr) {
+		if (sensorActive[0] && sensorActive[1]) {
+			loops++;
+			netejarSensor(false);
+		}
+	}
+	else if (sensor[3] == nullptr) {	// Aixo vol dir que nomes hi ha 3 sensors
+		if (sensorActive[0] && sensorActive[1] && sensorActive[2]) {
+			loops++;
+			netejarSensor(false);
+		}
+	}
+	if (thisSensor != -1) {
+		sensorState[thisSensor] = SENSOR_ENTER;
 	}
 }

@@ -37,7 +37,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	int OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 	void CleanMeshes();
 	void createMap1();
@@ -45,8 +45,10 @@ public:
 	void addMeshToMap(PrimitiveTypes type, char* path, int x, int y, int z, int degToRotate);
 
 	// Temes de sensors
-	void netejarSensor();
-	void comprobarMetaDeSensors();
+	void netejarSensor(bool netejaTotal = true);
+	void comprobarMetaDeSensors(int thisSensor = -1);
+	int getLastResetGetTicks = 0;
+	int loops = 0;
 public:
 
 	PhysBody3D* pb_chassis;

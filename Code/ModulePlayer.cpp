@@ -75,6 +75,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->deleteVehiclesFromWorld();
 		// refresca mapa
 		system("mapa.tmx");
+		App->physics->CleanConstraints();
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
@@ -84,7 +85,7 @@ update_status ModulePlayer::Update(float dt)
 		// crea vehicle
 		VehicleInfo car = createVehicle(VEHICLE_CAR);
 		vehicle = App->physics->AddVehicle(car);
-		vehicle->SetPos(App->camera->Position.x, App->camera->Position.y + 10, App->camera->Position.z);
+		vehicle->SetPos(0, 0, 0);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
@@ -98,6 +99,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->CleanUp();
@@ -113,6 +115,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
@@ -126,6 +129,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
@@ -140,6 +144,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
@@ -154,6 +159,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
@@ -168,6 +174,7 @@ update_status ModulePlayer::Update(float dt)
 		App->physics->CleanWorld();
 		App->physics->CleanBodies();
 		App->physics->CleanVehicle();
+		App->physics->CleanConstraints();
 		App->physics->Start();
 		App->scene_intro->CleanMeshes();
 		App->scene_intro->createMap1();
@@ -186,6 +193,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
+	sprintf_s(title,"v: %.1f Km/h -- time: %is -- total_time: %is -- loops: %i --", vehicle->GetKmh(), (SDL_GetTicks() - App->scene_intro->getLastResetGetTicks)/ 1000 ,SDL_GetTicks() / 1000, App->scene_intro->loops);
 	App->window->SetTitle(title);
 	
 	App->camera->Position.x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() - 5 * App->player->vehicle->vehicle->getForwardVector().getX();
@@ -201,7 +209,7 @@ update_status ModulePlayer::Update(float dt)
 	//App->camera->LookAt(vec3(App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX(), vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY(), App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ()));// = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX();
 
 	//App->camera->Reference.z = App->player->vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX();
-
+	//sprintf_s(title, "%.1f Km/h, checkpoint: %i loops: %i, time: %i:%.1f, Win: %i", vehicle->GetKmh(), App->scene_intro->checkpoints_index, App->scene_intro->loopsCount, App->scene_intro->minutes, App->scene_intro->seconds, App->scene_intro->winCondition);
 	return UPDATE_CONTINUE;
 }
 
