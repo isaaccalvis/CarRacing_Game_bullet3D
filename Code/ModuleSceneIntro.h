@@ -64,7 +64,7 @@ public:
 	PhysMotor3D* right_wheel;
 
 	p2List<Primitive*> primitiveListMesh;
-	pugi::xml_document* mapXML;
+	pugi::xml_document* mapXML = nullptr;
 
 	Plane p;
 	PhysBody3D* sensor[4];

@@ -188,6 +188,8 @@ int ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 
 void ModuleSceneIntro::createMap1() {
 	netejarSensor(true);
+	//if (mapXML != nullptr)
+	//	mapXML->reset();
 	mapXML = new pugi::xml_document;
 	mapXML->load_file("mapa.tmx");
 	pugi::xml_node layer = mapXML->child("map").child("layer");
@@ -214,8 +216,8 @@ void ModuleSceneIntro::createMap1() {
 						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
 						cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
 						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-						PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
-						PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 5, true);
+						PhysBody3D *c3 = App->physics->AddBody(cube3, 0, true);
 
 						App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, -5, -5), vec3(1, 0, 0), vec3(1, 0, 0), false);
 					}
@@ -230,8 +232,8 @@ void ModuleSceneIntro::createMap1() {
 						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
 						cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
 						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-						PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
-						PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 5, true);
+						PhysBody3D *c3 = App->physics->AddBody(cube3, 0, true);
 
 						App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, 5, 5), vec3(1, 0, 0), vec3(1, 0, 0), false);
 					}
@@ -243,8 +245,8 @@ void ModuleSceneIntro::createMap1() {
 						Cube cube2(SIZE, SIZE, SIZE);
 						cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * 2, y * SPACE_PART_CIRCUIT * SIZE);
 						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
-						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-						PhysBody3D *c2 = App->physics->AddBody(cube2, 1);
+						PhysBody3D *c1 = App->physics->AddBody(cube, 0, true);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 1, true);
 
 						App->physics->AddConstraintP2P(*c1, *c2, vec3(2, 2, 2), vec3(0, 6, 0));
 					}
@@ -276,7 +278,7 @@ void ModuleSceneIntro::createMap1() {
 							sensor[3]->collision_listeners.add(this);
 						}
 						else {
-							printf_s("You have added a sensor that can't be placed ! (sensor max = 4)");
+							LOG("You have added a sensor that can't be placed ! (sensor max = 4)");
 							netejarSensor();
 							system("mapa.tmx");
 							createMap1();
@@ -295,7 +297,7 @@ void ModuleSceneIntro::createMap1() {
 					break;
 				case 7:
 					if (layer.attribute("name").as_string() == logicName)
-						addMeshToMap(Primitive_Custom, "meshes/arbre.obj", x, SIZE * 2, y + SIZE * SPACE_PART_CIRCUIT / 2.3f, 90);
+						addMeshToMap(Primitive_Custom, "meshes/arbre.obj", x * SPACE_PART_CIRCUIT * SIZE, SIZE * 2, y * SIZE * SPACE_PART_CIRCUIT, 90);
 					break;
 				case 8:
 					break;
@@ -336,13 +338,13 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 	case CUBE: {
 		Cube cube(radOrX, Y, Z);
 		cube.SetPos(x, y, z);
-		App->physics->AddBody(cube, 1);
+		App->physics->AddBody(cube, 1,true);
 		break;
 	}
 	case SPHERE: {
 		Sphere sphere(radOrX);
 		sphere.SetPos(x, y, z);
-		App->physics->AddBody(sphere, 1);
+		App->physics->AddBody(sphere, 1,true);
 		break;
 	}
 	case CIRCUIT_RECTA: {
@@ -412,10 +414,6 @@ void ModuleSceneIntro::addPrimitiveToMap(primitiveTypes type, int x, int y, int 
 
 void ModuleSceneIntro::addMeshToMap(PrimitiveTypes type, char* path, int x, int y, int z, int degToRotate = 0) {
 	switch (type) {
-	case	Primitive_Plane:
-	case	Primitive_Cube:
-	case	Primitive_Sphere:
-	case	Primitive_Cylinder:
 	case	Primitive_Custom: {
 		Primitive* item = new Custom(path,x,y,z,degToRotate);
 		primitiveListMesh.add(item);
@@ -428,8 +426,10 @@ void ModuleSceneIntro::CleanMeshes() {
 	while (rec != nullptr) {
 		p2List_item<Primitive*>* aux = rec;
 		rec = rec->next;
+		aux->data->clearPrimitive();
 		primitiveListMesh.del(aux);
 	}
+	primitiveListMesh.clear();
 }
 
 void ModuleSceneIntro::netejarSensor(bool netejaTotal) {

@@ -282,7 +282,23 @@ Custom::Custom() : Primitive() {
 	type = Primitive_Custom;
 	this->SetPos(0, 0, 0);
 }
-
+void Custom::clearPrimitive() {
+	std::vector<vec3>* item = &vertices;
+	for (int i = 0; i < item->size(); i++) {
+		item[i].clear();
+	}
+	std::vector<vec2>* item2 = &uvs;
+	for (int i = 0; i < item2->size(); i++) {
+		item2[i].clear();
+	}
+	std::vector<vec3>* item3 = &normals;
+	for (int i = 0; i < item3->size(); i++) {
+		item3[i].clear();
+	}
+	vertices.clear();
+	uvs.clear();
+	normals.clear();
+}
 Custom::Custom(const char* path, int x, int y, int z, int degToRotate = 0) : Primitive() {
 	type = Primitive_Custom;
 	loadOBJ(path, vertices, uvs, normals);

@@ -40,7 +40,6 @@ bool loadOBJ( const char * path, std::vector < vec3 > & out_vertices, std::vecto
 			//int matches = fscanf(file, "%d//%d//%d %d//%d//%d %d//%d//%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 			int matches = fscanf(file, "%d//%d %d//%d %d//%d\n", &vertexIndex[0], &normalIndex[0], &vertexIndex[1], &normalIndex[1], &vertexIndex[2], &normalIndex[2]);
 			if (matches != 6) {
-				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
 				return false;
 			}
 			vertexIndices.push_back(vertexIndex[0]);

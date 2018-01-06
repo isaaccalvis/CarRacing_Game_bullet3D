@@ -139,6 +139,13 @@ update_status ModulePhysics3D::Update(float dt)
 			item->data->Render();
 			item = item->next;
 		}
+		p2List_item<PhysBody3D*>* item2 = bodies.getFirst();
+		while (item2 != nullptr) {
+			if (item2->data->renderThisPhysbodyBasicPrimitive == true) {
+				item2->data->Render();
+			}
+			item2 = item2->next;
+		}
 
 		//if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		//{
@@ -235,7 +242,7 @@ void ModulePhysics3D::CleanConstraints() {
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
+PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, bool render_primtive)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.add(colShape);
@@ -244,7 +251,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 	startTransform.setFromOpenGLMatrix(&sphere.transform);
 
 	btVector3 localInertia(0, 0, 0);
-	if(mass != 0.f)
+	if (mass != 0.f)
 		colShape->calculateLocalInertia(mass, localInertia);
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -252,8 +259,8 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
-
+	PhysBody3D* pbody = new PhysBody3D(body, sphere, render_primtive);
+	pbody->renderThisPhysbodyBasicPrimitive = render_primtive;
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
 	bodies.add(pbody);
@@ -263,7 +270,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
+PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, bool render_primtive)
 {
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
 	shapes.add(colShape);
@@ -280,8 +287,9 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
+	PhysBody3D* pbody = new PhysBody3D(body, cube, render_primtive);
 
+	pbody->renderThisPhysbodyBasicPrimitive = render_primtive;
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
 	bodies.add(pbody);

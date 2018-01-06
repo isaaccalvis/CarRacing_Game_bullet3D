@@ -31,6 +31,7 @@ public:
 	PrimitiveTypes	GetType() const;
 
 	void getXY(int &x, int &y);
+	virtual void clearPrimitive() {}
 protected:
 	int x = 0, y = 0;
 public:
@@ -111,6 +112,7 @@ public:
 	Custom();
 	Custom(const char* path, int x , int y, int z, int degToRotate);
 	void InnerRender() const;
+	void clearPrimitive();
 public:
 	std::vector< vec3 > vertices;
 	std::vector< vec2 > uvs;
