@@ -255,7 +255,7 @@ void ModuleSceneIntro::createMap1() {
 					break;
 				case 4: {
 					Cube seCub(SIZE  * 2, SIZE, SIZE * 2);
-					seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE);
+					seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE / 2, y * SPACE_PART_CIRCUIT * SIZE);
 					// Aixo son els sensors
 					if (sensor[0] == nullptr) {
 						sensor[0] = App->physics->AddBody(seCub, 0);
