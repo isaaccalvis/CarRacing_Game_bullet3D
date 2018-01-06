@@ -61,7 +61,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	p.Render();
 
-
 	return UPDATE_CONTINUE;
 }
 
@@ -193,7 +192,8 @@ void ModuleSceneIntro::createMap1() {
 	mapXML->load_file("mapa.tmx");
 	pugi::xml_node layer = mapXML->child("map").child("layer");
 	std::string nullLayerString = "";
-	std::string elements = "elements";
+	std::string elementsName = "elements";
+	std::string logicName = "logic";
 	while (layer.attribute("name").as_string() != nullLayerString) {
 		pugi::xml_node layer_data = layer.child("data");
 		pugi::xml_node tile = layer_data.child("tile");
@@ -206,112 +206,122 @@ void ModuleSceneIntro::createMap1() {
 				case 0:
 					break;
 				case 1: {
-					//Cube cube(SIZE, SIZE, SIZE);
-					//Cube cube2(SIZE, SIZE, SIZE);
-					//cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE);
-					//cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
-					//PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-					//PhysBody3D *c2 = App->physics->AddBody(cube2, 1);
+					if (layer.attribute("name").as_string() == logicName) {
+						Cube cube(SIZE, SIZE, SIZE);
+						Cube cube2(SIZE, SIZE, SIZE);
+						Cube cube3(SIZE, SIZE, SIZE);
+						cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * 2, y * SPACE_PART_CIRCUIT * SIZE);
+						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+						cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
+						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+						PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
 
-					//App->physics->AddConstraintP2P(*c1, *c2, vec3(2, 2, 2), vec3(2, 2, 2));
-					Cube cube(SIZE, SIZE, SIZE);
-					Cube cube2(SIZE, SIZE, SIZE);
-					Cube cube3(SIZE, SIZE, SIZE);
-					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
-					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
-					cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
-					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
-					PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
-
-					App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, -5, -5), vec3(1, 0, 0), vec3(1, 0, 0), false);
-
+						App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, -5, -5), vec3(1, 0, 0), vec3(1, 0, 0), false);
+					}
 				}
-					break;
+						break;
 				case 2: {
-					Cube cube(SIZE, SIZE, SIZE);
-					Cube cube2(SIZE, SIZE, SIZE);
-					Cube cube3(SIZE, SIZE, SIZE);
-					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
-					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
-					cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
-					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
-					PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
+					if (layer.attribute("name").as_string() == logicName) {
+						Cube cube(SIZE, SIZE, SIZE);
+						Cube cube2(SIZE, SIZE, SIZE);
+						Cube cube3(SIZE, SIZE, SIZE);
+						cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * 2, y * SPACE_PART_CIRCUIT * SIZE);
+						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+						cube3.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT, y * SPACE_PART_CIRCUIT * SIZE);
+						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+						PhysBody3D *c3 = App->physics->AddBody(cube3, 0);
 
-					App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, 5, 5), vec3(1, 0, 0), vec3(1, 0, 0), false);
+						App->physics->AddConstraintHinge(*c1, *c2, vec3(0, 0, 0), vec3(0, 5, 5), vec3(1, 0, 0), vec3(1, 0, 0), false);
+					}
 				}
-					break;
+						break;
 				case 3: {
-					Cube cube(SIZE, SIZE, SIZE);
-					Cube cube2(SIZE, SIZE, SIZE);
-					cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * SPACE_PART_CIRCUIT / 2, y * SPACE_PART_CIRCUIT * SIZE);
-					cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
-					PhysBody3D *c1 = App->physics->AddBody(cube, 0);
-					PhysBody3D *c2 = App->physics->AddBody(cube2, 5);
+					if (layer.attribute("name").as_string() == logicName) {
+						Cube cube(SIZE, SIZE, SIZE);
+						Cube cube2(SIZE, SIZE, SIZE);
+						cube.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE * 2, y * SPACE_PART_CIRCUIT * SIZE);
+						cube2.SetPos(x * SPACE_PART_CIRCUIT * SIZE, 0, y * SPACE_PART_CIRCUIT * SIZE * 1.25f);
+						PhysBody3D *c1 = App->physics->AddBody(cube, 0);
+						PhysBody3D *c2 = App->physics->AddBody(cube2, 1);
 
-				//	App->physics->AddConstraintSlider(*c1, *c2, vec3(0, 0, 0), vec3(1, 1, 1));
+						App->physics->AddConstraintP2P(*c1, *c2, vec3(2, 2, 2), vec3(0, 6, 0));
+					}
 				}
-					break;
+						break;
 				case 4: {
-					Cube seCub(SIZE  * 2, SIZE, SIZE * 2);
-					seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE / 2, y * SPACE_PART_CIRCUIT * SIZE);
-					// Aixo son els sensors
-					if (sensor[0] == nullptr) {
-						sensor[0] = App->physics->AddBody(seCub, 0);
-						sensor[0]->SetAsSensor(true);
-						sensor[0]->collision_listeners.add(this);
-					}else if (sensor[1] == nullptr) {
-						sensor[1] = App->physics->AddBody(seCub, 0);
-						sensor[1]->SetAsSensor(true);
-						sensor[1]->collision_listeners.add(this);
-					}
-					else if (sensor[2] == nullptr) {
-						sensor[2] = App->physics->AddBody(seCub, 0);
-						sensor[2]->SetAsSensor(true);
-						sensor[2]->collision_listeners.add(this);
-					}
-					else if (sensor[3] == nullptr) {
-						sensor[3] = App->physics->AddBody(seCub, 0);
-						sensor[3]->SetAsSensor(true);
-						sensor[3]->collision_listeners.add(this);
-					}
-					else {
-						printf_s("You have added a sensor that can't be placed ! (sensor max = 4)");
-						netejarSensor();
-						system("mapa.tmx");
-						createMap1();
-						return;
+					if (layer.attribute("name").as_string() == logicName) {
+						Cube seCub(SIZE * 2, SIZE, SIZE * 2);
+						seCub.SetPos(x * SPACE_PART_CIRCUIT * SIZE, SIZE / 2, y * SPACE_PART_CIRCUIT * SIZE);
+						// Aixo son els sensors
+						if (sensor[0] == nullptr) {
+							sensor[0] = App->physics->AddBody(seCub, 0);
+							sensor[0]->SetAsSensor(true);
+							sensor[0]->collision_listeners.add(this);
+						}
+						else if (sensor[1] == nullptr) {
+							sensor[1] = App->physics->AddBody(seCub, 0);
+							sensor[1]->SetAsSensor(true);
+							sensor[1]->collision_listeners.add(this);
+						}
+						else if (sensor[2] == nullptr) {
+							sensor[2] = App->physics->AddBody(seCub, 0);
+							sensor[2]->SetAsSensor(true);
+							sensor[2]->collision_listeners.add(this);
+						}
+						else if (sensor[3] == nullptr) {
+							sensor[3] = App->physics->AddBody(seCub, 0);
+							sensor[3]->SetAsSensor(true);
+							sensor[3]->collision_listeners.add(this);
+						}
+						else {
+							printf_s("You have added a sensor that can't be placed ! (sensor max = 4)");
+							netejarSensor();
+							system("mapa.tmx");
+							createMap1();
+							return;
+						}
 					}
 				}
-					break;
+						break;
 				case 5:
-					addPrimitiveToMap(CUBE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == logicName)
+						addPrimitiveToMap(CUBE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
 					break;
 				case 6:
-					addPrimitiveToMap(SPHERE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == logicName)
+						addPrimitiveToMap(SPHERE, x * SIZE* SPACE_PART_CIRCUIT, 0, y * SIZE* SPACE_PART_CIRCUIT, SIZE, SIZE, SIZE);
 					break;
 				case 7:
+					if (layer.attribute("name").as_string() == logicName)
+						addMeshToMap(Primitive_Custom, "meshes/arbre.obj", x, SIZE * 2, y + SIZE * SPACE_PART_CIRCUIT / 2.3f, 90);
 					break;
 				case 8:
 					break;
 				case 9:
-					addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_RECTA, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				case 10:
-					addPrimitiveToMap(CIRCUIT_ROTA_FRONT_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_ROTA_FRONT_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				case 11:
-					addPrimitiveToMap(CIRCUIT_ROTA_FRONT_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_ROTA_FRONT_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				case 12:
-					addPrimitiveToMap(CIRCUIT_ROTA_BACK_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_ROTA_BACK_RIGHT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				case 13:
-					addPrimitiveToMap(CIRCUIT_ROTA_BACK_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_ROTA_BACK_LEFT, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				case 14:
-					addPrimitiveToMap(CIRCUIT_RECTA_LATERAL, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
+					if (layer.attribute("name").as_string() == elementsName)
+						addPrimitiveToMap(CIRCUIT_RECTA_LATERAL, x * SPACE_PART_CIRCUIT * SIZE, 1, y * SPACE_PART_CIRCUIT * SIZE, SIZE, SIZE, SIZE);
 					break;
 				}
 				tile = tile.next_sibling("tile");
